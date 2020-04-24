@@ -1,0 +1,140 @@
+html {
+    font-family: sans-serif;
+}
+
+body {
+    background-color: white;
+}
+
+h1 {
+    color: black;
+    margin: 5px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+h2 {
+    color: black;
+    margin: 5px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+p {
+    margin: 5px;
+}
+
+input {
+    margin: 5px;
+    background-color: lightgray;
+    border: solid darkgray;
+    border-radius: 8px;
+    user-select: none;
+    outline: none;
+    padding: 5px;
+    font: 15px Arial;
+    text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+    button.large {
+        width: 100%;
+        float: none !important;
+        margin-left: unset !important;
+        margin-right: unset !important;
+    }
+    div {
+        margin-left: unset !important;
+        margin-right: unset !important;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    div.grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+button.large {
+    border: thick solid lightgray;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font: 15px Arial;
+    border-radius: 8px;
+    outline: none;
+    margin: 5px;
+    transition: 100ms;
+    transition-timing-function: ease;
+    user-select: none;
+}
+
+button.large:hover {
+    box-shadow: 0 5px darkgray;
+}
+
+button.large:active {
+    box-shadow: none;
+    transform: translateY(5px);
+}
+
+div#infoPanel {
+    background: black;
+    width: inherit;
+    max-width: 300px;
+    padding: 50px;
+    margin: 5px;
+    border-radius: 25px;
+}
+
+div.idle {
+    border: 15px solid green;
+}
+
+div.busy {
+    border: 15px solid yellow;
+}
+
+div.occupied {
+    background: yellow !important;
+    border: 15px solid red;
+}
+
+div.debug {
+    border: 15px solid grey;
+}
+
+h1.idle {
+    color: white;
+}
+
+h1.busy {
+    color: white;
+}
+
+h1.occupied {
+    color: black;
+}
+
+h1.debug {
+    color: white;
+}
+
+h2.idle {
+    color: white;
+}
+
+h2.busy {
+    color: white;
+}
+
+h2.occupied {
+    color: black;
+}
+
+h2.debug {
+    color: white;
+}

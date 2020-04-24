@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<title>Status Display Panel</title>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <div id="fullScreen">
+        <h1 style="float: left;">Status Display Panel</h1>
+        <button onclick="location.href = 'admin.html';" class="large" style="background-color: grey; float: right; ">Go to Control Panel</button>
+        <div style="clear: both;"></div>
+    </div>
+    <div id="infoPanel" class="statusBox">
+        <h1 id="statusDisplayTitle">Status:</h1>
+        <h2 id="statusDisplay">empty</h2>
+    </div>
+    <button onclick="initialise()" class="large" style="background-color: blue;">Initialise Display Panel</button>
+
+</body>
+<script src="noSleep.js"></script>
+<script>
+    // handles telemetry and displays the status
+    let status = {
+        status: "noConnection",
+        seen: true
+    }
+
+    timerID = setInterval(getStatus, 5000);
+
+    function initialise() {
+        // Keeps the device awake
+        var noSleep = new NoSleep();
+        noSleep.enable();
+
+        // Fullscreen the display panel
+        document.getElementById("infoPanel").requestFullscreen();
+
+
+    }
+
+    function getStatus() {
+
+        let httpGetStatus = new XMLHttpRequest();
+
+        httpGetStatus.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // Load new status
+                status = JSON.parse(this.responseText.trim());
+
+                // Set seen flag
+                status.seen = true;
+                sendStatus();
+
+                // Display status
+                updateStatus();
+            }
+        };
+
+        httpGetStatus.open("GET", "status.json", true);
+        httpGetStatus.send();
+
+    }
+
+    function sendStatus() {
+
+        let httpSendStatus = new XMLHttpRequest();
+        httpSendStatus.open("POST", "set.sh", true);
+        httpSendStatus.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpSendStatus.send(JSON.stringify(status));
+
+    }
+
+    function updateStatus() {
+        // There are a number of pre-set statuses, which the style should react to:
+        // idle, busy, occupied, debug;
+        // which corresponds to the following messages:
+        // come in without knocking, come in after knocking, do not knock, debug messages (e.g. check network).
+        switch (status.status) {
+            case "idle":
+            case "busy":
+            case "occupied":
+            case "debug":
+                document.getElementById("statusDisplay").innerHTML = status.status;
+                document.getElementById("statusDisplay").className = status.status;
+                document.getElementById("infoPanel").className = status.status;
+                document.getElementById("statusDisplayTitle").className = status.status;
+                break;
+
+            default:
+                document.getElementById("statusDisplay").innerHTML = status.status;
+                document.getElementById("statusDisplay").className = "debug";
+                document.getElementById("infoPanel").className = "debug";
+                document.getElementById("statusDisplayTitle").className = "debug";
+
+        }
+
+        // Gets status upon page load
+        getStatus();
+
+    }
+</script>
+
+</html>
